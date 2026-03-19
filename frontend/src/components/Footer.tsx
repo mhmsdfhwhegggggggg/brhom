@@ -152,6 +152,7 @@ export default function Footer() {
           <div className="flex flex-col items-end gap-2 text-right">
             <p className="text-gray-500 text-xs">© 2025 INVESTCORP CAPITAL. جميع الحقوق محفوظة لشركة إنفستكورب كابيتال القابضة.</p>
             <div className="flex gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+              <Link to="/admin-login" className="hover:text-green-500 transition-colors border-l border-white/10 pl-4">دخول الإدارة</Link>
               <a href="#" className="hover:text-white transition-colors">سياسة الخصوصية</a>
               <a href="#" className="hover:text-white transition-colors">الشروط والأحكام</a>
               <a href="#" className="hover:text-white transition-colors">إخلاء المسؤولية</a>
