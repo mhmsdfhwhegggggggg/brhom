@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --background: 222 47% 7%;
+  --foreground: 213 31% 91%;
+  
+  --primary: 142 71% 45%;
+  --primary-foreground: 144 80% 5%;
+  
+  --secondary: 222 47% 11%;
+  --secondary-foreground: 210 40% 98%;
+  
+  --accent: 45 93% 47%;
+  --accent-foreground: 222 47% 11%;
+  
+  --card: 222 47% 9%;
+  --card-foreground: 213 31% 91%;
+  
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
+  --ring: 142 71% 45%;
+  
+  --radius: 1rem;
+}
+
+@layer base {
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
+    font-family: 'Cairo', 'IBM Plex Sans Arabic', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+  }
+  
+  .glass-card {
+    @apply transform transition-all duration-300 hover:scale-[1.02] hover:bg-white/[0.05] hover:border-white/[0.15];
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsla(var(--primary), 0.5);
+  }
+
+  .bg-mesh {
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(142, 71%, 45%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(45, 93%, 47%, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(142, 71%, 45%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(222, 47%, 12%, 1) 0px, transparent 50%);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.gradient-bg {
+  @apply bg-mesh min-h-screen;
+}
+
+.premium-btn {
+  @apply relative overflow-hidden px-6 py-3 rounded-2xl font-bold transition-all duration-300 
+         hover:shadow-[0_0_20px_hsla(var(--primary),0.4)] active:scale-95;
+}
+
+.premium-btn-primary {
+  @apply bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--primary),0.9)];
+}
+
+.premium-btn-secondary {
+  @apply glass text-white hover:bg-white/10;
+}
+
