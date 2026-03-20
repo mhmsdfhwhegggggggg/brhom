@@ -16,10 +16,14 @@ export default function ClientLogin() {
     setError('');
     try {
       const res = await clientLogin(accessCode.trim(), password.trim());
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('role', 'client');
-      localStorage.setItem('username', res.data.name);
-      navigate('/client');
+      if (res.data && res.data.token && res.data.token !== 'undefined') {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('role', 'client');
+        localStorage.setItem('username', res.data.name || 'مستثمر');
+        navigate('/client');
+      } else {
+        throw new Error('بيانات الدخول غير مكتملة');
+      }
     } catch {
       setError('رمز الدخول أو كلمة المرور غير صحيحة');
     } finally {

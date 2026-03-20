@@ -9,6 +9,12 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
+  if (token === 'undefined') {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    return config;
+  }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

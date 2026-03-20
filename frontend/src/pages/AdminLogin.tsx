@@ -16,10 +16,14 @@ export default function AdminLogin() {
     setError('');
     try {
       const res = await adminLogin(username, password);
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('role', 'admin');
-      localStorage.setItem('username', res.data.username);
-      navigate('/admin');
+      if (res.data && res.data.token && res.data.token !== 'undefined') {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('role', 'admin');
+        localStorage.setItem('username', res.data.username || username);
+        navigate('/admin');
+      } else {
+        throw new Error('بيانات الدخول غير مكتملة');
+      }
     } catch {
       setError('اسم المستخدم أو كلمة المرور غير صحيحة');
     } finally {
