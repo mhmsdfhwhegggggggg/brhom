@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, TrendingUp, DollarSign, Mail, LogOut, Plus, Trash2, Edit3,
-  RefreshCw, Key, Copy, CheckCircle, X, BarChart3, Shield, Search, Globe, Activity, Zap, Clock, Settings, Lock
+  RefreshCw, Key, Copy, CheckCircle, X, BarChart3, Shield, Search, Globe, Activity, Zap, Clock, Settings, Lock, Menu
 } from 'lucide-react';
 import {
   getClients, getStats, createClient, updateClient, deleteClient,
@@ -68,6 +68,7 @@ export default function AdminDashboard() {
   const [supportPhone, setSupportPhone] = useState('');
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Modal states
   const [showAddClient, setShowAddClient] = useState(false);
@@ -107,7 +108,8 @@ export default function AdminDashboard() {
       setTelegramUrl(telRes.data.value || '');
       setSupportEmail(emailRes.data.value || '');
       setSupportPhone(phoneRes.data.value || '');
-    } catch {
+    } catch (err) {
+      console.error('Failed to load admin data:', err);
       navigate('/admin-login');
     } finally {
       setLoading(false);
@@ -208,10 +210,10 @@ export default function AdminDashboard() {
     setTimeout(() => setCopied(''), 2000);
   };
 
-  const filteredClients = clients.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) || 
-    c.email.toLowerCase().includes(search.toLowerCase()) || 
-    c.access_code.toUpperCase().includes(search.toUpperCase())
+  const filteredClients = (clients || []).filter(c =>
+    (c.name || '').toLowerCase().includes(search.toLowerCase()) || 
+    (c.email || '').toLowerCase().includes(search.toLowerCase()) || 
+    (c.access_code || '').toUpperCase().includes(search.toUpperCase())
   );
 
   if (loading) {
@@ -225,8 +227,18 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-[120vh] bg-mesh selection:bg-green-500/30" dir="rtl">
       
-      {/* Sidebar - Desktop */}
-      <aside className="fixed right-0 top-0 bottom-0 w-80 glass border-l border-white/5 z-50 p-8 hidden xl:flex flex-col">
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] xl:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`fixed right-0 top-0 bottom-0 w-80 glass border-l border-white/5 z-[60] p-8 flex flex-col transition-transform duration-300 xl:translate-x-0 ${
+        mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}>
         <div className="flex items-center gap-4 mb-12">
            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/20">
               <Shield className="w-7 h-7 text-white" />
@@ -248,7 +260,10 @@ export default function AdminDashboard() {
            ].map(item => (
              <button
                key={item.id}
-               onClick={() => setActiveTab(item.id as any)}
+                onClick={() => {
+                  setActiveTab(item.id as any);
+                  setMobileMenuOpen(false);
+                }}
                className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all group ${
                  activeTab === item.id ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'
                }`}
@@ -279,7 +294,23 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="xl:mr-80 p-8 xl:p-12">
+      <main className="xl:mr-80 p-6 md:p-8 xl:p-12 relative">
+        
+        {/* Mobile Header Toggle */}
+        <div className="xl:hidden flex items-center justify-between mb-8 pb-6 border-b border-white/5">
+           <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                 <Shield className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-white font-black">ADMIN</span>
+           </div>
+           <button 
+             onClick={() => setMobileMenuOpen(true)}
+             className="w-12 h-12 rounded-xl glass flex items-center justify-center text-white"
+           >
+              <Menu className="w-6 h-6" />
+           </button>
+        </div>
         
         {/* Top Header */}
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">

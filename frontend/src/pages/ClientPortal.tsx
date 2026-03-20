@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  TrendingUp, TrendingDown, DollarSign, LogOut, User, Briefcase, BarChart3,
+  TrendingUp, LogOut, User, Briefcase, BarChart3,
   Calendar, Shield, CreditCard, Percent, ArrowUpRight, Wallet, History,
   Activity, Zap, Globe, Lock
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts';
 import { getClientProfile, getMyProfits } from '../lib/api';
 
 interface ClientProfile {
@@ -48,12 +48,13 @@ export default function ClientPortal() {
       setProfits(profitsRes.data);
       
       // Mock chart data based on profits
-      const pData = profitsRes.data.slice(0, 7).reverse().map((p: any, i: number) => ({
+      const pData = (profitsRes.data || []).slice(0, 7).reverse().map((p: any, i: number) => ({
         name: new Date(p.date).toLocaleDateString('ar-SA', { day: 'numeric', month: 'short' }),
-        value: profileRes.data.balance - (7-i)*50 // mock trend
+        value: (profileRes.data?.balance || 0) - (7-i)*50 // mock trend
       }));
       setChartData(pData);
-    } catch {
+    } catch (err) {
+      console.error('Failed to load client data:', err);
       navigate('/client-login');
     }
   }, [navigate]);
