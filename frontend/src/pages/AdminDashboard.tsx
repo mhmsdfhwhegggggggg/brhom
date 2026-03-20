@@ -253,7 +253,7 @@ export default function AdminDashboard() {
            {[
              { id: 'dashboard', label: 'الرئيسية', icon: BarChart3 },
              { id: 'clients', label: 'إدارة العملاء', icon: Users, count: clients.length },
-             { id: 'subscriptions', label: 'طلبات الاشتراك', icon: Zap, count: subscriptions.filter(s => s.status === 'pending').length },
+             { id: 'subscriptions', label: 'طلبات الاشتراك', icon: Zap, count: (subscriptions || []).filter(s => s.status === 'pending').length },
              { id: 'profits', label: 'سجل الأرباح', icon: TrendingUp },
              { id: 'messages', label: 'الرسائل الواردة', icon: Mail, count: stats?.unread_messages },
              { id: 'settings', label: 'الإعدادات', icon: Settings },

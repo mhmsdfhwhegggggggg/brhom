@@ -5,7 +5,7 @@ import {
   Calendar, Shield, CreditCard, Percent, ArrowUpRight, Wallet, History,
   Activity, Zap, Globe, Lock
 } from 'lucide-react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { getClientProfile, getMyProfits } from '../lib/api';
 
 interface ClientProfile {
